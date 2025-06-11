@@ -30,4 +30,8 @@ yarn.lock
 yarn-error.log
 /test-results
 /playwright-report
-/vendor/bagisto/rest-api
+
+/vendor
+!/vendor/bagisto
+!/vendor/bagisto/rest-api
+!/vendor/bagisto/rest-api/**
