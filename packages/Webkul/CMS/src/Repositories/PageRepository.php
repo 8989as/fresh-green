@@ -35,7 +35,10 @@ class PageRepository extends Repository
 
         $page = parent::create($data);
 
-        $page->channels()->sync($data['channels']);
+        // Set default channels if not provided
+        $channels = $data['channels'] ?? app('Webkul\Core\Repositories\ChannelRepository')->all()->pluck('id')->toArray();
+        
+        $page->channels()->sync($channels);
 
         return $page;
     }

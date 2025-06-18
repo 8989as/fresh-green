@@ -360,4 +360,27 @@ return [
         'sort'       => 9,
         'icon'       => 'icon-configuration',
     ],
+
+    /**
+     * Contact.
+     */
+    [
+        'key'        => 'contact',
+        'name'       => 'Contact',
+        'route'      => 'admin.contact.landscape-requests.index',
+        'sort'       => 10,
+        'icon'       => 'icon-mail-plane',
+    ], [
+        'key'        => 'contact.landscape_requests',
+        'name'       => 'Landscape Requests',
+        'route'      => 'admin.contact.landscape-requests.index',
+        'sort'       => 1,
+        'icon'       => '',
+    ], [
+        'key'        => 'contact.contact_us',
+        'name'       => 'Contact Us',
+        'route'      => 'admin.contact.contact-us.index',
+        'sort'       => 2,
+        'icon'       => '',
+    ],
 ];

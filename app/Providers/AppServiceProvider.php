@@ -28,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
         } else {
             Debugbar::disable();
         }
+        
+        // Register Contact package service provider
+        $this->app->register(\App\Providers\ContactPackageServiceProvider::class);
     }
 
     /**

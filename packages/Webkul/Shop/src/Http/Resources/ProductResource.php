@@ -1,5 +1,4 @@
 <?php
-
 namespace Webkul\Shop\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -37,7 +36,11 @@ class ProductResource extends JsonResource
             'name'                  => $this->name,
             'name_latin'            => $this->product_flats->first()?->latin_name,
             'url_key'               => $this->url_key,
-            'price'                 => core()->formatPrice($productTypeInstance->getMinimalPrice()),
+            // 'price'                 => core()->formatPrice($productTypeInstance->getMinimalPrice()),
+            'price'                 => (float) $this->price,
+            'special_price'         => $this->special_price ? (float) $this->special_price : null,
+            'special_price_from'    => $this->special_price_from?->format('Y-m-d'),
+            'special_price_to'      => $this->special_price_to?->format('Y-m-d'),
             'short_description'     => $this->short_description,
             'description'           => $this->description,
             'quantity'              => $productTypeInstance->totalQuantity(),
@@ -50,10 +53,10 @@ class ProductResource extends JsonResource
             'created_at'            => $this->created_at,
             'updated_at'            => $this->updated_at,
             'in_stock'              => (bool) $productTypeInstance->isSaleable(),
-            'is_saved'              => (bool) (auth()->guard()->user() 
+            'is_saved'              => (bool) (auth()->guard()->user()
                 ? auth()->guard()->user()->wishlist_items
                     ->where('channel_id', core()->getCurrentChannel()->id)
-                    ->where('product_id', $this->id)->count() > 0 
+                    ->where('product_id', $this->id)->count() > 0
                 : false),
             'is_item_in_cart'       => null,
             'show_quantity_changer' => (bool) $productTypeInstance->showQuantityBox(),
@@ -84,28 +87,28 @@ class ProductResource extends JsonResource
     protected function getAttributeOptions($attributeCode)
     {
         $attributeValues = $this->attribute_values->where('attribute.code', $attributeCode);
-        
+
         if ($attributeValues->isEmpty()) {
             return [];
         }
 
         $results = [];
-        
+
         foreach ($attributeValues as $attributeValue) {
-            if (!$attributeValue->attribute) {
+            if (! $attributeValue->attribute) {
                 continue;
             }
 
             if ($attributeValue->attribute->type === 'select' || $attributeValue->attribute->type === 'multiselect') {
                 // Get the option value from either text_value or integer_value
                 $optionValue = $attributeValue->text_value ?: $attributeValue->integer_value;
-                
-                if (!$optionValue) {
+
+                if (! $optionValue) {
                     continue;
                 }
 
                 $optionIds = is_string($optionValue) ? explode(',', $optionValue) : [$optionValue];
-                
+
                 foreach ($optionIds as $optionId) {
                     $option = $attributeValue->attribute->options->where('id', $optionId)->first();
                     if ($option) {
@@ -166,8 +169,8 @@ class ProductResource extends JsonResource
     protected function getBaseImageData()
     {
         $baseImage = $this->images->first();
-        
-        if (!$baseImage) {
+
+        if (! $baseImage) {
             return null;
         }
 

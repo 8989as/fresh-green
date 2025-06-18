@@ -1,0 +1,19 @@
+{
+    "name": "webkul/contact",
+    "description": "Contact package for Bagisto",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Webkul\\Contact\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\Contact\\Providers\\ContactServiceProvider"
+            ]
+        }
+    },
+    "require": {}
+}
